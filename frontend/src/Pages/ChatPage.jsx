@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { ChatState } from "../Context/ChatProvider";
 import { Box } from "@chakra-ui/react";
 import SiderDrawer from "../components/miscellaneous/SiderDrawer";
@@ -11,7 +10,13 @@ const ChatPage = () => {
   return (
     <div style={{ width: "100%" }}>
       {user && <SiderDrawer />}
-      <Box>
+      <Box
+        display={"flex"}
+        justifyContent={"space-between"}
+        w={"100%"}
+        h={"91.5vh"}
+        p={"10px"}
+      >
         {user && <MyChats />}
         {user && <ChatBox />}
       </Box>
