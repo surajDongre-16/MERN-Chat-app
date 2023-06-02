@@ -48,6 +48,9 @@ io.on("connection", (socket) => {
     console.log("User Joined Room: " + room);
   });
 
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
   socket.on("new message", (newMessageReceived) => {
     let chat = newMessageReceived.chat;
     if (!chat.users) return console.log("char.users not defined");
