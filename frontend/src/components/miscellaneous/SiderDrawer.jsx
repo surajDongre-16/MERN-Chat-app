@@ -134,7 +134,7 @@ const SiderDrawer = () => {
         <Tooltip label="Search users to chat" hasArrow placement="bottom-end">
           <Button variant={"ghost"} onClick={onOpen}>
             <Search2Icon />
-            <Text d={{ base: "none", md: "flex" }} p="4">
+            <Text display={{ base: "none", md: "flex" }} p="4">
               Search User
             </Text>
           </Button>
