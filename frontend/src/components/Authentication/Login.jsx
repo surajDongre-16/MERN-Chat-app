@@ -22,7 +22,10 @@ const Login = () => {
 
   const handleClick = () => setShow(!show);
 
-  const submitHandler = async () => {
+  const submitHandler = async (
+    email = "guest@gmail.com",
+    password = "123456"
+  ) => {
     setLoading(true);
     if (!email || !password) {
       toast({
@@ -103,7 +106,7 @@ const Login = () => {
         colorScheme="blue"
         width={"100%"}
         style={{ marginTop: 15 }}
-        onClick={submitHandler}
+        onClick={() => submitHandler(email, password)}
         isLoading={loading}
       >
         Login
@@ -112,11 +115,7 @@ const Login = () => {
         variant={"solid"}
         colorScheme="red"
         width={"100%"}
-        onClick={() => {
-          setEmail("guest@gmail.com");
-          setPassword("123456");
-          submitHandler();
-        }}
+        onClick={() => submitHandler()}
         isLoading={loading}
       >
         Get Guest User Credentials
