@@ -141,7 +141,7 @@ const SiderDrawer = () => {
         </Tooltip>
 
         <Text fontSize={"2xl"} fontFamily={"Work sans"}>
-          Chat by SD
+          Chit-Chat
         </Text>
 
         <div>
