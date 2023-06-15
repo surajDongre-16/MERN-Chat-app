@@ -17,9 +17,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import axios from "axios";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
-import axios from "axios";
 import UserListItem from "../UserAvatar/UserListItem";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
