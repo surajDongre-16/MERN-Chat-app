@@ -4,6 +4,7 @@ import { Box } from "@chakra-ui/react";
 import SiderDrawer from "../components/miscellaneous/SiderDrawer";
 import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
+import Footer from "../components/Footer";
 
 const ChatPage = () => {
   const { user } = ChatState();
@@ -23,6 +24,7 @@ const ChatPage = () => {
           <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
         )}
       </Box>
+      <Footer />
     </div>
   );
 };
