@@ -8,10 +8,21 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import EmojiPicker, {
+  EmojiStyle,
+  SkinTones,
+  Theme,
+  Categories,
+  EmojiClickData,
+  Emoji,
+  SuggestionMode,
+  SkinTonePickerLocation,
+} from "emoji-picker-react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import io from "socket.io-client";
 import Lottie from "react-lottie";
+import { GrEmoji } from "react-icons/gr";
 import { ChatState } from "../Context/ChatProvider";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import ProfileModal from "./miscellaneous/ProfileModal";
@@ -30,6 +41,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
+  const [emojiBox, setEmojiBox] = useState(false);
+
   const toast = useToast();
 
   const defaultOptions = {
@@ -110,6 +123,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
+      setEmojiBox(false);
       try {
         const config = {
           headers: {
@@ -143,7 +157,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
-
+    setEmojiBox(false);
     if (!socketConnected) return;
 
     if (!typing) {
@@ -210,6 +224,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             h="100%"
             borderRadius="lg"
             overflowY="hidden"
+            position="relative"
           >
             {loading ? (
               <Spinner
@@ -237,13 +252,44 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+              {emojiBox ? (
+                <Box
+                  width={{ base: "100%", md: "35%" }}
+                  position={"absolute"}
+                  bottom={"50"}
+                >
+                  <EmojiPicker
+                    onEmojiClick={(value) =>
+                      setNewMessage([...newMessage, value.emoji].join(""))
+                    }
+                    autoFocusSearch={false}
+                    emojiStyle={EmojiStyle.NATIVE}
+                    height={350}
+                    width={"100%"}
+                  />
+                </Box>
+              ) : (
+                <></>
+              )}
+
+              <Box
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <GrEmoji
+                  fontSize={"30px"}
+                  onClick={() => setEmojiBox(!emojiBox)}
+                />
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                  ml={"5px"}
+                />
+              </Box>
             </FormControl>
           </Box>
         </>
