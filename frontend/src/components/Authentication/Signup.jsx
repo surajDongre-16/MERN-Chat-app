@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ENDPOINT } from "../miscellaneous/GroupChatModal";
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -101,7 +102,7 @@ const Signup = () => {
       };
 
       const { data } = await axios.post(
-        "/api/user",
+        `${ENDPOINT}/api/user`,
         { name, email, password, pic },
         config
       );

@@ -30,6 +30,7 @@ import UserListItem from "../UserAvatar/UserListItem";
 import { getSender } from "../../config/ChatLogics";
 import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
 import { Effect } from "react-notification-badge";
+import { ENDPOINT } from "./GroupChatModal";
 
 const SiderDrawer = () => {
   const {
@@ -74,7 +75,10 @@ const SiderDrawer = () => {
         },
       };
 
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(
+        `${ENDPOINT}/api/user?search=${search}`,
+        config
+      );
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -100,7 +104,11 @@ const SiderDrawer = () => {
         },
       };
 
-      const { data } = await axios.post("/api/chat", { userId }, config);
+      const { data } = await axios.post(
+        `${ENDPOINT}/api/chat`,
+        { userId },
+        config
+      );
 
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
 

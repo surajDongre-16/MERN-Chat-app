@@ -33,7 +33,7 @@ const server = app.listen(PORT, console.log(`Server Started on Port ${PORT}`));
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://sd-mern-chat-app-backend.onrender.com",
+    origin: "http://localhost:3000",
   },
 });
 
