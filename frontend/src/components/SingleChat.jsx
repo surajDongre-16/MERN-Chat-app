@@ -18,7 +18,7 @@ import EmojiPicker, {
   SuggestionMode,
   SkinTonePickerLocation,
 } from "emoji-picker-react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, AttachmentIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import io from "socket.io-client";
 import Lottie from "react-lottie";
@@ -42,6 +42,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const [emojiBox, setEmojiBox] = useState(false);
+  const [file, setFile] = useState("");
+  const [image, setImage] = useState("");
 
   const toast = useToast();
 
@@ -135,7 +137,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         const { data } = await axios.post(
           `${ENDPOINT}/api/message`,
           {
-            content: newMessage,
+            content: file && image ? { image, type: "file" } : newMessage,
             chatId: selectedChat,
           },
           config
@@ -152,6 +154,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           position: "bottom",
         });
       }
+      setImage("");
+      setFile("");
     }
   };
 
@@ -175,6 +179,36 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timerLength);
   };
+
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+    setNewMessage(e.target.files[0].name);
+  };
+
+  const uploadFile = async (data) => {
+    try {
+      return await axios.post(
+        `http://localhost:5000/api/message/file/upload`,
+        data
+      );
+    } catch (error) {
+      console.log("Error while calling uploadFile API ", error);
+    }
+  };
+
+  useEffect(() => {
+    const getImage = async () => {
+      if (file) {
+        const data = new FormData();
+        data.append("name", file.name);
+        data.append("file", file);
+
+        const response = await uploadFile(data);
+        setImage(response.data);
+      }
+    };
+    getImage();
+  }, [file]);
 
   return (
     <>
@@ -274,12 +308,21 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
               <Box
                 display={"flex"}
-                justifyContent={"center"}
+                justifyContent={"space-between"}
                 alignItems={"center"}
               >
                 <GrEmoji
-                  fontSize={"30px"}
+                  fontSize={"25px"}
                   onClick={() => setEmojiBox(!emojiBox)}
+                />
+                <label htmlFor="file-upload">
+                  <AttachmentIcon fontSize={"25px"} />
+                </label>
+                <Input
+                  type="file"
+                  id="file-upload"
+                  display="none"
+                  onChange={(e) => onFileChange(e)}
                 />
                 <Input
                   variant="filled"
@@ -288,6 +331,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   value={newMessage}
                   onChange={typingHandler}
                   ml={"5px"}
+                  width={"90%"}
                 />
               </Box>
             </FormControl>

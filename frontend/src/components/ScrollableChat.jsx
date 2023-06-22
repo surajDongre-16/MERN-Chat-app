@@ -11,6 +11,7 @@ import { Avatar, Tooltip } from "@chakra-ui/react";
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
+  console.log(messages, "messages");
   return (
     <ScrollableFeed>
       {messages &&
@@ -41,7 +42,7 @@ const ScrollableChat = ({ messages }) => {
                 marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
               }}
             >
-              {m.content}
+              {typeof m.content !== "string" ? <>abcd</> : m.content}
             </span>
           </div>
         ))}
