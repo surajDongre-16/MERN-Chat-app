@@ -56,7 +56,7 @@ const allMessages = asyncHandler(async (req, res) => {
 const uploadFile = asyncHandler(async (req, res) => {
   if (!req.file) return res.status(404).json("File not found");
 
-  const imageUrl = `http://localhost:5000/api/message/file/${req.file.filename}`;
+  const imageUrl = `https://sd-mern-chat-app-backend.onrender.com/api/message/file/${req.file.filename}`;
 
   res.status(200).json(imageUrl);
 });
