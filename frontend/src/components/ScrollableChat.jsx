@@ -7,11 +7,24 @@ import {
   isSameUser,
 } from "../config/ChatLogics";
 import { ChatState } from "../Context/ChatProvider";
-import { Avatar, Tooltip } from "@chakra-ui/react";
+import { Avatar, Tooltip, Box, Image } from "@chakra-ui/react";
+import FileWithDownloadButton from "./miscellaneous/FileWithDownloadButton";
+
+const DisplayFile = ({ message }) => {
+  return (
+    <Box>
+      <FileWithDownloadButton
+        fileUrl={message.fileUrl}
+        fileType={message.fileType}
+        fileName={message.fileName}
+      />
+    </Box>
+  );
+};
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
-  console.log(messages, "messages");
+  // console.log(messages, "messages");
   return (
     <ScrollableFeed>
       {messages &&
@@ -42,7 +55,11 @@ const ScrollableChat = ({ messages }) => {
                 marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
               }}
             >
-              {typeof m.content !== "string" ? <>abcd</> : m.content}
+              {typeof m.content !== "string" ? (
+                <DisplayFile message={m.content} />
+              ) : (
+                m.content
+              )}
             </span>
           </div>
         ))}

@@ -8,16 +8,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import EmojiPicker, {
-  EmojiStyle,
-  SkinTones,
-  Theme,
-  Categories,
-  EmojiClickData,
-  Emoji,
-  SuggestionMode,
-  SkinTonePickerLocation,
-} from "emoji-picker-react";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { ArrowBackIcon, AttachmentIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import io from "socket.io-client";
@@ -137,7 +128,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         const { data } = await axios.post(
           `${ENDPOINT}/api/message`,
           {
-            content: file && image ? { image, type: "file" } : newMessage,
+            content: file && image ? image : newMessage,
             chatId: selectedChat,
           },
           config
@@ -155,7 +146,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         });
       }
       setImage("");
-      setFile("");
+      setFile();
     }
   };
 
@@ -187,10 +178,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const uploadFile = async (data) => {
     try {
-      return await axios.post(
-        `http://localhost:5000/api/message/file/upload`,
-        data
-      );
+      return await axios.post(`${ENDPOINT}/api/message/file/upload`, data);
     } catch (error) {
       console.log("Error while calling uploadFile API ", error);
     }
@@ -204,7 +192,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         data.append("file", file);
 
         const response = await uploadFile(data);
-        setImage(response.data);
+        setImage({
+          fileUrl: response.data,
+          fileType: file.type,
+          fileName: file.name,
+        });
       }
     };
     getImage();
