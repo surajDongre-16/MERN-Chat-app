@@ -7,7 +7,7 @@ import {
   isSameUser,
 } from "../config/ChatLogics";
 import { ChatState } from "../Context/ChatProvider";
-import { Avatar, Tooltip, Box, Image } from "@chakra-ui/react";
+import { Avatar, Tooltip, Box } from "@chakra-ui/react";
 import FileWithDownloadButton from "./miscellaneous/FileWithDownloadButton";
 
 const DisplayFile = ({ message }) => {
@@ -24,7 +24,6 @@ const DisplayFile = ({ message }) => {
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
-  // console.log(messages, "messages");
   return (
     <ScrollableFeed>
       {messages &&

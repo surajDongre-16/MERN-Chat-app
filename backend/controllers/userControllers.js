@@ -57,7 +57,6 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-// /api/user?search=suraj
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
